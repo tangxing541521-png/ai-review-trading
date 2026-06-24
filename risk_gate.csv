@@ -1,0 +1,2 @@
+﻿date,allow_open_position,risk_gate_action,risk_gate_reason,continuation_decline,leader_decline,cycle_tide,market_regime_final
+20260624,False,禁止开仓,cycle进入退潮,False,False,True,空仓（防守）

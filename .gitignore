@@ -1,0 +1,8 @@
+__pycache__/ 
+*.pyc 
+.venv/ 
+.env 
+data/raw/ 
+data/cache/ 
+market_histories_*.csv 
+daily_quotes_*.csv 

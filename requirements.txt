@@ -1,0 +1,5 @@
+pandas
+akshare
+openpyxl
+numpy
+jinja2

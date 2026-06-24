@@ -1,0 +1,7 @@
+initial_cash: 100000
+buy_top_n: 5
+buy_lot: 100
+min_amount: 1000000000
+processed_dir: data/processed
+portfolio_dir: portfolio
+report_dir: reports/daily

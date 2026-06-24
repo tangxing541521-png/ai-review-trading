@@ -1,0 +1,2 @@
+﻿date,market_cycle,cycle_strength,cycle_stage_confidence,avg_momentum_score,avg_trend_score,momentum_change_rate,limit_up_count,top_score_concentration,market_divergence_std,trading_mode,recommended_position_ratio,risk_level,risk_action
+20260624,退潮期,95.19,86.41,74.35,82.13,-2.95,9,113.3,7.8,防守（空仓）,10,14.16,空仓
