@@ -35,6 +35,30 @@
       </div>
     </section>
 
+    <section class="gauge-grid">
+      <div class="gauge-card">
+        <div class="section-title">
+          <span>H</span>
+          <h2>策略健康分</h2>
+        </div>
+        <div ref="healthGauge" class="gauge-box"></div>
+      </div>
+      <div class="gauge-card">
+        <div class="section-title">
+          <span>R</span>
+          <h2>当前风险等级</h2>
+        </div>
+        <div ref="riskGauge" class="gauge-box"></div>
+      </div>
+      <div class="gauge-card">
+        <div class="section-title">
+          <span>P</span>
+          <h2>今日仓位</h2>
+        </div>
+        <div ref="positionGauge" class="gauge-box"></div>
+      </div>
+    </section>
+
     <section class="panel-grid">
       <div class="module-card">
         <div class="section-title">
@@ -124,14 +148,52 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import * as echarts from 'echarts'
+import { nextTick, onMounted, ref } from 'vue'
 import { api } from '../services/api'
 
 const dashboard = ref({})
 const decision = ref({})
+const healthGauge = ref(null)
+const riskGauge = ref(null)
+const positionGauge = ref(null)
 const placeholderTargets = ref([
   { code: '-', name: '暂无核心标的', role: '等待数据' }
 ])
+
+function numberValue(value) {
+  const parsed = Number(String(value || '0').replace('%', ''))
+  return Number.isFinite(parsed) ? parsed : 0
+}
+
+function positionValue(text) {
+  const match = String(text || '').match(/max_position=([0-9.]+)%/)
+  return match ? numberValue(match[1]) : numberValue(text)
+}
+
+function renderGauge(el, value, title, color) {
+  if (!el) return
+  const chart = echarts.init(el)
+  chart.setOption({
+    backgroundColor: 'transparent',
+    series: [
+      {
+        type: 'gauge',
+        min: 0,
+        max: 100,
+        progress: { show: true, width: 12, itemStyle: { color } },
+        axisLine: { lineStyle: { width: 12, color: [[1, '#15293c']] } },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { color: '#8199ad', distance: 16 },
+        pointer: { width: 4, itemStyle: { color } },
+        title: { color: '#8199ad', fontSize: 12, offsetCenter: [0, '68%'] },
+        detail: { color: '#f3f8ff', fontSize: 24, formatter: '{value}%', offsetCenter: [0, '38%'] },
+        data: [{ value: Math.max(0, Math.min(100, value)), name: title }]
+      }
+    ]
+  })
+}
 
 function runTodayStrategy() {
   window.alert('运行今日策略：当前为前端占位按钮，后续接入本地策略执行 API。')
@@ -142,6 +204,8 @@ onMounted(async () => {
   dashboard.value = dashboardRes.data || {}
   const decisionRes = await api.decisionCenter()
   decision.value = decisionRes.data || {}
+  const judgeRes = await api.strategyJudge()
+  const healthScore = numberValue(judgeRes.data?.health_score || judgeRes.data?.health?.strategy_health_score)
   const res = await api.leaders()
   placeholderTargets.value = Array.isArray(res.data) && res.data.length
     ? res.data.slice(0, 3).map((item) => ({
@@ -150,6 +214,10 @@ onMounted(async () => {
         role: item.leader_tier || '核心标的'
       }))
     : [{ code: '-', name: '暂无数据，请先运行今日策略。', role: '等待数据' }]
+  await nextTick()
+  renderGauge(healthGauge.value, healthScore, 'health', '#35d07f')
+  renderGauge(riskGauge.value, numberValue(dashboard.value.risk_level), 'risk', '#ff6b6b')
+  renderGauge(positionGauge.value, positionValue(dashboard.value.position_advice), 'position', '#00c2ff')
 })
 </script>
 
@@ -196,7 +264,8 @@ h1 {
 .decision-card,
 .module-card,
 .summary-card,
-.ai-center-card {
+.ai-center-card,
+.gauge-card {
   border: 1px solid #183047;
   border-radius: 8px;
   background: rgba(9, 18, 29, 0.94);
@@ -206,6 +275,21 @@ h1 {
 .decision-card {
   padding: 22px;
   margin-bottom: 16px;
+}
+
+.gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.gauge-card {
+  padding: 18px;
+}
+
+.gauge-box {
+  height: 220px;
 }
 
 .section-title {
@@ -394,6 +478,7 @@ strong {
 @media (max-width: 980px) {
   .decision-grid,
   .panel-grid,
+  .gauge-grid,
   .performance-grid,
   .ai-center-grid,
   .ai-list-grid {

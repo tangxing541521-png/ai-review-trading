@@ -11,6 +11,9 @@
         <strong>{{ data.health?.strategy_health_score || '0' }}/100</strong>
         <small>{{ data.health?.rating }}</small>
       </div>
+      <section class="judge-chart-card">
+        <div ref="healthGauge" class="judge-gauge"></div>
+      </section>
       <div class="metric-grid">
         <MetricCard label="胜率" :value="metric('胜率')" />
         <MetricCard label="盈亏比" :value="metric('盈亏比')" />
@@ -47,11 +50,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import * as echarts from 'echarts'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import MetricCard from '../components/MetricCard.vue'
 import { api } from '../services/api'
 
 const data = ref({ allowed: false, health: {}, metrics: [] })
+const healthGauge = ref(null)
 const scoreClass = computed(() => {
   const score = Number(data.value.health?.strategy_health_score || 0)
   if (score >= 60) return 'positive'
@@ -63,6 +68,30 @@ function metric(name) {
   const row = (data.value.metrics || []).find((item) => item.metric === name)
   return row ? `${row.value}${row.unit || ''}` : '暂无'
 }
+function renderHealthGauge() {
+  if (!healthGauge.value) return
+  const score = Number(data.value.health?.strategy_health_score || data.value.health_score || 0)
+  const chart = echarts.init(healthGauge.value)
+  chart.setOption({
+    backgroundColor: 'transparent',
+    series: [
+      {
+        type: 'gauge',
+        min: 0,
+        max: 100,
+        progress: { show: true, width: 16, itemStyle: { color: score >= 60 ? '#35d07f' : '#ff6b6b' } },
+        axisLine: { lineStyle: { width: 16, color: [[1, '#15293c']] } },
+        axisTick: { show: false },
+        splitLine: { show: false },
+        axisLabel: { color: '#8aa2b8' },
+        pointer: { itemStyle: { color: '#00c2ff' } },
+        title: { color: '#8aa2b8', offsetCenter: [0, '68%'] },
+        detail: { color: '#f3f8ff', fontSize: 30, formatter: '{value}分', offsetCenter: [0, '38%'] },
+        data: [{ value: score, name: 'strategy health' }]
+      }
+    ]
+  })
+}
 onMounted(async () => {
   const res = await api.strategyJudge()
   data.value = {
@@ -71,5 +100,21 @@ onMounted(async () => {
     health: res.data?.health || {},
     metrics: Array.isArray(res.data?.metrics) ? res.data.metrics : []
   }
+  await nextTick()
+  renderHealthGauge()
 })
 </script>
+
+<style scoped>
+.judge-chart-card {
+  border: 1px solid #183047;
+  border-radius: 8px;
+  background: rgba(9, 18, 29, 0.94);
+  margin: 18px 0;
+  padding: 18px;
+}
+
+.judge-gauge {
+  height: 280px;
+}
+</style>

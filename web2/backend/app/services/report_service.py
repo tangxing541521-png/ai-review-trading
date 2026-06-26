@@ -123,11 +123,20 @@ def read_paper_data(user: dict) -> dict:
             "membership_level": user.get("membership_level", "free"),
             "disclaimer": settings.disclaimer,
         }
+    equity_curve = _read_csv_rows(settings.project_root / "paper_equity_curve.csv")
+    drawdown_curve = [
+        {
+            "date": row.get("date", ""),
+            "max_drawdown": row.get("max_drawdown", "0"),
+        }
+        for row in equity_curve
+    ]
     return {
         "allowed": True,
         "account": _read_latest_csv_row(settings.project_root / "paper_account.csv"),
         "positions": _read_csv_rows(settings.project_root / "paper_positions.csv"),
-        "equity_curve": _read_csv_rows(settings.project_root / "paper_equity_curve.csv"),
+        "equity_curve": equity_curve,
+        "drawdown_curve": drawdown_curve,
         "membership_level": user.get("membership_level", "free"),
         "disclaimer": settings.disclaimer,
     }
@@ -226,10 +235,15 @@ def read_strategy_judge(user: dict) -> dict:
         }
     health = _read_latest_csv_row(settings.project_root / "strategy_health_score.csv")
     metrics = _read_csv_rows(settings.project_root / "strategy_metrics.csv")
+    metric_map = {row.get("metric", ""): row.get("value", "") for row in metrics}
     return {
         "allowed": True,
         "health": health,
         "metrics": metrics,
+        "health_score": health.get("strategy_health_score", "0"),
+        "win_rate": metric_map.get("胜率", "0"),
+        "profit_loss_ratio": metric_map.get("盈亏比", "0"),
+        "max_drawdown": metric_map.get("最大回撤", "0"),
         "report": _read_text(settings.project_root / "strategy_judge_report.md"),
         "membership_level": user.get("membership_level", "free"),
         "disclaimer": settings.disclaimer,
