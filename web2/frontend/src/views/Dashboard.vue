@@ -123,6 +123,14 @@
       </div>
     </section>
 
+    <section class="daily-report-mini-card">
+      <div class="section-title">
+        <span>DR</span>
+        <h2>AI日报摘要</h2>
+      </div>
+      <p>{{ dailyReport.summary || '暂无数据，请先运行今日策略。' }}</p>
+    </section>
+
     <section class="ai-center-card">
       <div class="section-title">
         <span>AI</span>
@@ -172,6 +180,7 @@ import { api } from '../services/api'
 const dashboard = ref({})
 const decision = ref({})
 const mainline = ref({})
+const dailyReport = ref({})
 const healthGauge = ref(null)
 const riskGauge = ref(null)
 const positionGauge = ref(null)
@@ -235,6 +244,8 @@ onMounted(async () => {
   decision.value = decisionRes.data || {}
   const mainlineRes = await api.mainline()
   mainline.value = mainlineRes.data || {}
+  const dailyReportRes = await api.dailyAiReport()
+  dailyReport.value = dailyReportRes.data || {}
   const judgeRes = await api.strategyJudge()
   const healthScore = numberValue(judgeRes.data?.health_score || judgeRes.data?.health?.strategy_health_score)
   const res = await api.leaders()
@@ -296,6 +307,7 @@ h1 {
 .module-card,
 .summary-card,
 .mainline-mini-card,
+.daily-report-mini-card,
 .ai-center-card,
 .gauge-card {
   border: 1px solid #183047;
@@ -455,6 +467,20 @@ strong {
 .mainline-mini-grid strong {
   font-size: 22px;
   color: #35d07f;
+}
+
+.daily-report-mini-card {
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.daily-report-mini-card p {
+  border-left: 3px solid #35d07f;
+  background: #08131f;
+  border-radius: 6px;
+  color: #d7e7f3;
+  line-height: 1.8;
+  padding: 16px;
 }
 
 .summary-card p {

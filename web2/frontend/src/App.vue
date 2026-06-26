@@ -13,6 +13,7 @@
         <RouterLink to="/market">今日市场</RouterLink>
         <RouterLink to="/leaders">龙头排行榜</RouterLink>
         <RouterLink to="/mainline">主线分析</RouterLink>
+        <RouterLink to="/daily-ai-report">AI日报</RouterLink>
         <RouterLink to="/frozen-orders">冻结订单</RouterLink>
         <RouterLink to="/paper">Paper Trading</RouterLink>
         <RouterLink to="/strategy-judge">Strategy Judge</RouterLink>

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
+import DailyAIReport from '../views/DailyAIReport.vue'
 import Login from '../views/Login.vue'
 import Market from '../views/Market.vue'
 import PaperTrading from '../views/PaperTrading.vue'
@@ -15,6 +16,7 @@ import Validation from '../views/Validation.vue'
 const routes = [
   { path: '/login', name: 'login', component: Login },
   { path: '/', name: 'dashboard', component: Dashboard },
+  { path: '/daily-ai-report', name: 'dailyAiReport', component: DailyAIReport },
   { path: '/market', name: 'market', component: Market },
   { path: '/leaders', name: 'leaders', component: Leaders },
   { path: '/mainline', name: 'mainline', component: Mainline },

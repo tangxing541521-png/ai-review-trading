@@ -5,6 +5,7 @@ from app.core.security import create_access_token
 from app.schemas.auth import LoginRequest, LoginResponse
 from app.services.auth_service import authenticate_user, get_user_by_username
 from app.services.decision_center import build_decision_center
+from app.services.daily_ai_report import build_daily_ai_report
 from app.services.mainline_engine import build_mainline_analysis
 from app.services.report_service import (
     build_dashboard,
@@ -178,3 +179,8 @@ def decision_center(current_user: dict = Depends(get_optional_user)) -> dict:
 @router.get("/mainline")
 def mainline(current_user: dict = Depends(get_optional_user)) -> dict:
     return _envelope(current_user, True, build_mainline_analysis(current_user))
+
+
+@router.get("/daily-ai-report")
+def daily_ai_report(current_user: dict = Depends(get_optional_user)) -> dict:
+    return _envelope(current_user, True, build_daily_ai_report(current_user))
