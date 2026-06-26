@@ -3,3 +3,4 @@ akshare
 openpyxl
 numpy
 jinja2
+streamlit

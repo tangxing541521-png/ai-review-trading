@@ -14,6 +14,8 @@ from forward_validation import update_forward_validation
 from main import PROJECT_ROOT, load_config
 from market_cycle import update_market_cycle
 from strategy.trend_core import build_trend_core_pool
+from decision_freeze import freeze_order_files, is_frozen
+from system_clock import assert_generation_allowed
 from trade_decision_engine import build_trade_decision
 
 
@@ -431,6 +433,10 @@ def _write_monthly_report(records: pd.DataFrame, summary: dict, report_dir: Path
 
 def run_forward_test(target_date: str | None = None) -> Dict:
     target_date = target_date or datetime.now().strftime("%Y%m%d")
+    if is_frozen(target_date):
+        raise RuntimeError(f"{target_date} 已存在冻结订单，禁止二次生成策略。请读取 frozen_decisions 中的冻结文件。")
+    assert_generation_allowed(target_date)
+
     config = load_config()
     report_dir = PROJECT_ROOT / "reports" / "forward_test"
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -458,6 +464,14 @@ def run_forward_test(target_date: str | None = None) -> Dict:
     report_path = _write_daily_report(target_date, report_dir, top5, sells, holds, risks, cycle, decision, execution, alignment)
     monthly_path = _write_monthly_report(records, summary_row, report_dir, target_date)
     validation = update_forward_validation(target_date, pool, decision, execution, top5, PROJECT_ROOT)
+    orders_csv = Path(execution["paths"]["orders_csv"])
+    orders_json = Path(execution["paths"]["orders_json"])
+    frozen = freeze_order_files(
+        target_date,
+        orders_csv,
+        orders_json if orders_json.exists() else None,
+        note="forward_test 在收盘冻结窗口生成当天唯一策略后写入，后续禁止覆盖。",
+    )
 
     return {
         "pool_path": pool_path,
@@ -499,6 +513,7 @@ def run_forward_test(target_date: str | None = None) -> Dict:
         "hold_count": int(len(holds)),
         "risk_count": int(len(risks)),
         "total_observed": summary_row["total_observed"],
+        "frozen": frozen,
     }
 
 
@@ -538,6 +553,9 @@ def main() -> None:
     print(f"执行报告：{result['execution_paths']['execution_report']}")
     print(f"订单CSV：{result['execution_paths']['orders_csv']}")
     print(f"订单JSON：{result['execution_paths']['orders_json']}")
+    print(f"冻结订单CSV：{result['frozen']['orders_csv']}")
+    print(f"冻结订单JSON：{result['frozen']['orders_json']}")
+    print(f"冻结元数据：{result['frozen']['meta_path']}")
     print(f"仓位计划：{result['execution_paths']['position_plan']}")
     print(f"风险检查：{result['execution_paths']['risk_check_report']}")
     print(f"实盘对齐报告：{result['alignment']['paths']['execution_feasibility_report']}")

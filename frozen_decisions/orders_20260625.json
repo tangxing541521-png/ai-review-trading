@@ -1,0 +1,910 @@
+{
+  "date": "20260625",
+  "is_frozen": true,
+  "frozen_at": "2026-06-25 20:09:27",
+  "source_order_file": "C:\\Users\\tangxin\\Documents\\ai复盘交易\\ai-review-trading\\frozen_decisions\\orders_20260625.csv",
+  "order_count": 100,
+  "orders": [
+    {
+      "date": 20260625,
+      "stock_code": "600105",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 86.17,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688313",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 86.1,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600522",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 86.04,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300398",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 86.0,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "001309",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 85.73,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300223",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 85.63,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "000021",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 85.46,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300346",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 85.33,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603986",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 85.08,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301308",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.91,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688525",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.75,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300567",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.69,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301013",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.6,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603083",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.24,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688396",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.15,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688507",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 84.14,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300373",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 83.78,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688347",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 83.77,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300604",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 83.73,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600246",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 83.54,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600552",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.99,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002536",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.98,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688048",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.87,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002407",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.75,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300209",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.74,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688037",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.63,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600703",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.46,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002428",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.44,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "601869",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.42,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300054",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.27,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600172",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.12,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002281",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 82.07,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300083",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.87,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300037",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.68,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600487",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.57,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300623",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.52,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688172",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.38,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688082",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.27,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301611",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.26,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688469",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.23,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688627",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 81.05,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002975",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.87,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600460",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.82,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "605111",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.82,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "000070",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.81,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "003031",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.77,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600497",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.72,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300835",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.67,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "003018",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.6,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300260",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.59,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600176",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.3,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688403",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.3,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300661",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 80.14,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603938",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.93,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "000823",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.9,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300726",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.84,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603256",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.84,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603650",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.78,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688361",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.75,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688498",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.74,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002409",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.73,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300174",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.72,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688409",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.61,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600596",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.49,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603618",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.43,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301200",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.42,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600160",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.23,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688143",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.16,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "002354",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 79.13,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600641",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.8,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600961",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.78,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301526",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.66,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600226",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.61,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688548",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.6,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301366",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.58,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600206",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.4,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603757",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.26,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688630",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.19,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "000050",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 78.02,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600869",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.97,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600498",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.9,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603588",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.89,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603663",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.76,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "603186",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.63,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "001339",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.63,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600888",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.47,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688268",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 77.44,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "000657",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 76.77,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300489",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 76.57,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300005",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 76.54,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "601872",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 76.1,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301123",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 76.05,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "600378",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 75.89,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300497",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 75.88,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688141",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 75.86,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688090",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 75.41,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688233",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 75.26,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "300420",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 74.92,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "688530",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 74.34,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    },
+    {
+      "date": 20260625,
+      "stock_code": "301377",
+      "action": "SKIP",
+      "position_ratio": 0.0,
+      "score": 73.23,
+      "cycle": "退潮期",
+      "reason": "market_cycle=退潮；cycle进入退潮"
+    }
+  ],
+  "disclaimer": "仅供学习研究和模拟验证，不构成投资建议；冻结订单不代表真实交易指令。"
+}

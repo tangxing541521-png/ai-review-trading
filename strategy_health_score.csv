@@ -1,0 +1,2 @@
+﻿date,strategy_health_score,rating,return_score,return_drawdown_score,win_rate_score,profit_factor_score,drawdown_score,excess_return_score,sample_warning
+20260625,15,D：40分以下，不建议进入模拟盘,0,0,0,0,15,0,样本不足：当前 Paper Trading 和 Forward Validation 样本过少，评级仅作结构化诊断。

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import numpy as np
@@ -59,6 +60,23 @@ def _read_csv(path: Path, columns: list[str], dtype: dict | None = None) -> pd.D
         if column not in data.columns:
             data[column] = ""
     return data[columns]
+
+
+def _read_frozen_orders(project_root: Path, date: str) -> pd.DataFrame:
+    frozen_dir = project_root / "frozen_decisions"
+    json_path = frozen_dir / f"orders_{date}.json"
+    csv_path = frozen_dir / f"orders_{date}.csv"
+    if json_path.exists() and json_path.stat().st_size > 0:
+        payload = json.loads(json_path.read_text(encoding="utf-8"))
+        records = payload.get("orders", payload if isinstance(payload, list) else [])
+        orders = pd.DataFrame(records)
+    elif csv_path.exists() and csv_path.stat().st_size > 0:
+        orders = pd.read_csv(csv_path, dtype={"stock_code": str})
+    else:
+        return pd.DataFrame()
+    if not orders.empty and "stock_code" in orders.columns:
+        orders["stock_code"] = orders["stock_code"].astype(str).str.zfill(6)
+    return orders
 
 
 def _safe_float(value, default: float = 0.0) -> float:
@@ -227,14 +245,18 @@ def run_paper_trading(project_root: Path, max_days: int = 10) -> dict:
     equity_rows = []
     peak_assets = INITIAL_CASH
     previous_assets = INITIAL_CASH
+    missing_frozen_dates = []
 
     for _, vrow in validation.iterrows():
         date = str(vrow["date"])
         name_map = _load_name_map(project_root, date)
-        orders_path = project_root / f"orders_{date}.csv"
-        orders = pd.read_csv(orders_path, dtype={"stock_code": str}) if orders_path.exists() else pd.DataFrame()
-        if not orders.empty:
-            orders["stock_code"] = orders["stock_code"].astype(str).str.zfill(6)
+        frozen_json_path = project_root / "frozen_decisions" / f"orders_{date}.json"
+        frozen_csv_path = project_root / "frozen_decisions" / f"orders_{date}.csv"
+        if not frozen_json_path.exists() and not frozen_csv_path.exists():
+            missing_frozen_dates.append(date)
+            print(f"提示：{date} 缺少冻结订单，Paper Trading 跳过该日。请先运行 decision_freeze.py --date {date}")
+            continue
+        orders = _read_frozen_orders(project_root, date)
 
         market_regime = str(vrow.get("market_regime_final", ""))
         allow_trade = str(vrow.get("allow_trade", "NO")) == "YES"
@@ -370,6 +392,10 @@ def run_paper_trading(project_root: Path, max_days: int = 10) -> dict:
             "sharpe_ratio": stats["sharpe_ratio"],
         })
         previous_assets = total_assets
+
+    if not account_rows:
+        missing_text = "、".join(missing_frozen_dates) if missing_frozen_dates else "未知日期"
+        raise FileNotFoundError(f"缺少冻结订单：{missing_text}。请先执行 decision_freeze.py 生成冻结订单后再运行 paper_trading.py。")
 
     account = pd.DataFrame(account_rows, columns=ACCOUNT_COLUMNS)
     equity = pd.DataFrame(equity_rows, columns=EQUITY_COLUMNS)

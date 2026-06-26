@@ -1,0 +1,10 @@
+{
+  "date": "20260626",
+  "risk_level": "LOW",
+  "reason": "未发现本地新闻/公告文件，默认仅标记为 LOW。",
+  "sources": [],
+  "high_keywords": [],
+  "medium_keywords": [],
+  "decision_effect": "MARK_ONLY_DO_NOT_CHANGE_ORDER",
+  "disclaimer": "仅供学习研究和模拟验证，不构成投资建议；新闻风险只做标记，不改变冻结交易决策。"
+}

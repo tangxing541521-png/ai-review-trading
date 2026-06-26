@@ -1,3 +1,4 @@
 ﻿date,avg_momentum_score,avg_trend_score,combined_score_std,market_cycle,market_strength_momentum,market_strength_trend,market_regime_confidence,momentum_direction,trend_direction,trade_mode
 20260622,76.61,84.02,4.2,主升期,76.61,84.02,84.3,↑,↑,进攻
-20260624,74.35,82.13,7.8,冰点期,74.35,82.13,67.47,↓,↓,防守
+20260624,80.14,85.08,4.3,主升期,80.14,85.08,65.33,↑,↑,进攻
+20260625,76.48,83.14,4.17,冰点期,76.48,83.14,66.74,↓,↓,防守

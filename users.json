@@ -1,0 +1,23 @@
+[
+  {
+    "username": "free",
+    "password_hash": "c584d494ddb9a51a97d99c9b9633565ff573c0a1719d845dc97b188c0f208874",
+    "membership_level": "free",
+    "expire_date": "2099-12-31",
+    "is_active": true
+  },
+  {
+    "username": "member",
+    "password_hash": "5600376e863d2f57a053518f324ad3840b0bc2348b573af281a7b7cbe7a228c6",
+    "membership_level": "member",
+    "expire_date": "2099-12-31",
+    "is_active": true
+  },
+  {
+    "username": "admin",
+    "password_hash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+    "membership_level": "admin",
+    "expire_date": "2099-12-31",
+    "is_active": true
+  }
+]

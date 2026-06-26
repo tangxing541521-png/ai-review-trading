@@ -1,2 +1,2 @@
 ﻿date,market_regime_final,one_sentence_summary,master_score_mean,top_master_score,cycle,cycle_strength,avg_momentum_score,avg_trend_score,avg_continuation_score,leader_count,money_attack_status,mainline_status,style_switch_status,tide_status,allow_open_position,risk_gate_reason
-20260624,空仓（防守）,退潮或风控触发，禁止开仓,79.64,86.7,退潮期,95.19,74.35,82.13,65.48,2,资金观望,出现主线,未见明显切换,进入退潮,False,cycle进入退潮
+20260625,空仓（防守）,退潮或风控触发，禁止开仓,80.01,86.17,退潮期,91.63,76.48,83.14,65.35,3,资金进攻,出现主线,未见明显切换,进入退潮,False,cycle进入退潮

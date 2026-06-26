@@ -1,0 +1,10 @@
+{
+  "date": "20260625",
+  "freeze_time": "2026-06-25 14:36:04",
+  "data_snapshot_time": "2026-06-25 14:36:04",
+  "mode": "Trading Mode",
+  "is_frozen": true,
+  "source_order_file": "C:\\Users\\tangxin\\Documents\\ai复盘交易\\ai-review-trading\\orders_20260625.csv",
+  "hash": "67ef85c2471722379683a87cb82db3809b377c8b1123abb0ddb83bc767da589c",
+  "note": "首次生成正式交易决策后冻结；当天后续运行只读取本冻结订单。"
+}
