@@ -7,6 +7,7 @@ from pathlib import Path
 
 from app.core.config import settings
 from app.services.emotion_cycle_engine import build_emotion_cycle
+from app.services.leader_lifecycle_engine import build_leader_lifecycle
 
 
 def _read_csv_rows(path: Path) -> list[dict]:
@@ -119,6 +120,8 @@ def build_market_brain(user: dict | None = None) -> dict:
     rows = leader_rows or detection_rows or trend_rows
     sorted_rows = sorted(rows, key=_score, reverse=True)
     emotion_cycle = build_emotion_cycle(user)
+    lifecycle = build_leader_lifecycle(user)
+    lifecycle_map = {item.get("code"): item for item in lifecycle.get("leaders", [])}
     risk_score = _to_float(emotion_cycle.get("risk_score"))
 
     theme_rank = _build_theme_rank(rows or trend_rows)
@@ -155,12 +158,14 @@ def build_market_brain(user: dict | None = None) -> dict:
             "theme_rank": theme_rank,
         },
         "leader": {
-            "top_leaders": [_compact_stock(row) for row in sorted_rows[:10]],
+            "top_leaders": [_with_lifecycle(_compact_stock(row), lifecycle_map) for row in sorted_rows[:10]],
             "tier_summary": {
-                "T1": [_compact_stock(row) for row in t1[:10]],
-                "T2": [_compact_stock(row) for row in t2[:10]],
-                "trend_core": [_compact_stock(row) for row in trend_core[:10]],
+                "T1": [_with_lifecycle(_compact_stock(row), lifecycle_map) for row in t1[:10]],
+                "T2": [_with_lifecycle(_compact_stock(row), lifecycle_map) for row in t2[:10]],
+                "trend_core": [_with_lifecycle(_compact_stock(row), lifecycle_map) for row in trend_core[:10]],
             },
+            "lifecycle": lifecycle.get("leaders", []),
+            "lifecycle_summary": lifecycle.get("summary", ""),
         },
         "risk": {
             "risk_level": risk_score,
@@ -174,7 +179,7 @@ def build_market_brain(user: dict | None = None) -> dict:
         "decision": {
             "action": action,
             "summary": summary,
-            "watchlist": [_compact_stock(row) for row in watchlist_source[:10]],
+            "watchlist": [_with_lifecycle(_compact_stock(row), lifecycle_map) for row in watchlist_source[:10]],
         },
         "data_status": {
             "leader_rows": len(leader_rows),
@@ -207,3 +212,19 @@ def _position_reason(emotion_cycle: dict) -> str:
     if mode == "进攻":
         return f"情绪周期为{stage}，主线确认度较高，可围绕核心主线进攻。"
     return f"情绪周期为{stage}，等待更明确的主线和风险确认。"
+
+
+def _with_lifecycle(stock: dict, lifecycle_map: dict[str, dict]) -> dict:
+    item = lifecycle_map.get(stock.get("code"), {})
+    if not item:
+        return stock
+    return {
+        **stock,
+        "life_stage": item.get("life_stage", ""),
+        "stage_score": item.get("stage_score", ""),
+        "days_in_stage": item.get("days_in_stage", 0),
+        "lifecycle_risk": item.get("risk", ""),
+        "lifecycle_action": item.get("action", ""),
+        "lifecycle_reason": item.get("reason", []),
+        "lifecycle_warning": item.get("warning", []),
+    }

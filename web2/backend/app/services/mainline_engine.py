@@ -43,6 +43,8 @@ def build_mainline_analysis(user: dict) -> dict:
             "T2": tiers.get("T2", []),
             "trend_core": tiers.get("trend_core", []),
         },
+        "leader_lifecycle": brain.get("leader", {}).get("lifecycle", []),
+        "leader_lifecycle_summary": brain.get("leader", {}).get("lifecycle_summary", ""),
         "tomorrow_plan": {
             "action": action,
             "position": suggested_position,

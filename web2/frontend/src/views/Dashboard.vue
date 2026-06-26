@@ -197,7 +197,11 @@ const TierCard = defineComponent({
               { class: 'stock-stack' },
               props.items.slice(0, 5).map((item) =>
                 h('div', { class: 'stock-row', key: `${item.code}-${item.name}` }, [
-                  h('div', [h('strong', item.name || '-'), h('small', item.code || '-')]),
+                  h('div', [
+                    h('strong', item.name || '-'),
+                    h('small', item.code || '-'),
+                    h('em', `${item.life_stage || '观察'} / ${item.lifecycle_action || item.action || '观察'}`)
+                  ]),
                   h('span', item.score ?? item.master_score ?? '-')
                 ])
               )
@@ -510,6 +514,14 @@ strong {
 .stock-row small {
   display: block;
   margin-top: 4px;
+}
+
+.stock-row em {
+  color: #00c2ff;
+  display: block;
+  font-style: normal;
+  font-size: 12px;
+  margin-top: 6px;
 }
 
 .stock-row span {

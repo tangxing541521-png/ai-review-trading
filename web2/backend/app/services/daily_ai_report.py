@@ -78,6 +78,8 @@ def build_daily_ai_report(user: dict) -> dict:
         f"T2补涨龙头：{_top_names(tiers.get('T2', []))}。\n"
         f"趋势核心：{_top_names(tiers.get('trend_core', []))}。"
     )
+    lifecycle_items = leader.get("lifecycle", [])
+    lifecycle_view = _leader_lifecycle_text(lifecycle_items, leader.get("lifecycle_summary", ""))
 
     risk_view = "；".join(risk.get("warnings", [])) if risk.get("warnings") else "暂无额外风险提示。"
     tomorrow_plan = (
@@ -99,6 +101,7 @@ def build_daily_ai_report(user: dict) -> dict:
             "## 市场判断\n" + market_view,
             "## 主线判断\n" + mainline_view,
             "## 龙头梯队\n" + leader_view,
+            "## 龙头生命周期\n" + lifecycle_view,
             "## 风险提示\n" + risk_view,
             "## 明日计划\n" + tomorrow_plan,
             "## 冻结订单概览\n" + order_view,
@@ -113,6 +116,7 @@ def build_daily_ai_report(user: dict) -> dict:
         "market_view": market_view,
         "mainline_view": mainline_view,
         "leader_view": leader_view,
+        "leader_lifecycle_view": lifecycle_view,
         "risk_view": risk_view,
         "tomorrow_plan": tomorrow_plan,
         "full_report": full_report,
@@ -120,3 +124,15 @@ def build_daily_ai_report(user: dict) -> dict:
         "emotion_cycle_reason": cycle_reason,
         "disclaimer": settings.disclaimer,
     }
+
+
+def _leader_lifecycle_text(items: list[dict], summary: str) -> str:
+    if not items:
+        return summary or "暂无龙头生命周期数据。"
+    lines = [summary or "当前龙头生命周期如下："]
+    for item in items[:8]:
+        lines.append(
+            f"- {item.get('name', '')}({item.get('code', '')})："
+            f"{item.get('life_stage', '')}，建议{item.get('action', '')}，风险{item.get('risk', '')}。"
+        )
+    return "\n".join(lines)
