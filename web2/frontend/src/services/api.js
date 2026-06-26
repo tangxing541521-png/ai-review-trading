@@ -52,6 +52,7 @@ export const api = {
   strategyJudge: () => request('/strategy-judge'),
   decisionCenter: () => request('/decision-center'),
   mainline: () => request('/mainline'),
+  marketBrain: () => request('/market-brain'),
   dailyAiReport: () => request('/daily-ai-report'),
   membership: () => request('/membership'),
   disclaimer: () => request('/disclaimer')

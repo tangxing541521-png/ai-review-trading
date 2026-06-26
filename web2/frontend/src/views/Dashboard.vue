@@ -1,215 +1,208 @@
 <template>
-  <main class="command-center">
-    <header class="page-head">
-      <div>
-        <p class="eyebrow">AI Trading Command Center</p>
-        <h1>AI交易指挥舱</h1>
+  <main class="brain-page">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <p class="eyebrow">Trading Brain Pro</p>
+        <h1>AI 游资大脑</h1>
+        <p class="one-line">{{ brain.decision?.summary || '暂无数据，请先运行今日策略。' }}</p>
+        <div class="stars" aria-label="system confidence">★★★★★</div>
       </div>
-      <span class="status-badge">本地模拟</span>
-    </header>
 
-    <section class="decision-card">
-      <div class="section-title">
-        <span>01</span>
-        <h2>今日决策</h2>
-      </div>
-      <div class="decision-grid">
-        <div class="metric-box">
-          <small>市场状态</small>
-          <strong>{{ dashboard.market_status || '暂无' }}</strong>
+      <div class="hero-grid">
+        <div class="brain-stat-card primary">
+          <small>今天属于</small>
+          <strong>{{ brain.emotion?.stage || '暂无' }}</strong>
         </div>
-        <div class="metric-box">
-          <small>是否允许交易</small>
-          <strong :class="dashboard.allow_trade === 'YES' ? 'up' : 'flat'">
-            {{ dashboard.allow_trade || '暂无' }}
-          </strong>
+        <div class="brain-stat-card">
+          <small>市场情绪</small>
+          <strong>{{ brain.emotion?.score ?? 0 }}</strong>
         </div>
-        <div class="metric-box">
+        <div class="brain-stat-card">
+          <small>建议</small>
+          <strong>{{ brain.decision?.action || '观察' }}</strong>
+        </div>
+        <div class="brain-stat-card">
           <small>建议仓位</small>
-          <strong>{{ dashboard.position_advice || '暂无' }}</strong>
+          <strong>{{ brain.position?.suggested_position || '0%' }}</strong>
         </div>
-        <div class="metric-box">
-          <small>风险等级</small>
-          <strong class="risk">{{ dashboard.risk_level || '暂无' }}</strong>
+        <div class="brain-stat-card risk">
+          <small>风险</small>
+          <strong>{{ brain.risk?.risk_label || '暂无' }}</strong>
         </div>
-      </div>
-    </section>
-
-    <section class="gauge-grid">
-      <div class="gauge-card">
-        <div class="section-title">
-          <span>H</span>
-          <h2>策略健康分</h2>
+        <div class="brain-stat-card">
+          <small>主线</small>
+          <strong>{{ brain.theme?.main_theme || '暂无主线' }}</strong>
         </div>
-        <div ref="healthGauge" class="gauge-box"></div>
-      </div>
-      <div class="gauge-card">
-        <div class="section-title">
-          <span>R</span>
-          <h2>当前风险等级</h2>
+        <div class="brain-stat-card">
+          <small>龙头</small>
+          <strong>{{ firstName(tiers.T1) }}</strong>
         </div>
-        <div ref="riskGauge" class="gauge-box"></div>
-      </div>
-      <div class="gauge-card">
-        <div class="section-title">
-          <span>P</span>
-          <h2>今日仓位</h2>
+        <div class="brain-stat-card">
+          <small>补涨</small>
+          <strong>{{ firstName(tiers.T2) }}</strong>
         </div>
-        <div ref="positionGauge" class="gauge-box"></div>
-      </div>
-    </section>
-
-    <section class="panel-grid">
-      <div class="module-card">
-        <div class="section-title">
-          <span>02</span>
-          <h2>今日核心标的</h2>
-        </div>
-        <div class="target-list">
-          <div v-for="item in placeholderTargets" :key="item.code" class="target-row">
-            <div>
-              <strong>{{ item.name }}</strong>
-              <small>{{ item.code }}</small>
-            </div>
-            <span>{{ item.role }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="module-card">
-        <div class="section-title">
-          <span>03</span>
-          <h2>系统表现</h2>
-        </div>
-        <div class="performance-grid">
-          <div>
-            <small>模拟收益</small>
-            <strong>0%</strong>
-          </div>
-          <div>
-            <small>最大回撤</small>
-            <strong>0%</strong>
-          </div>
-          <div>
-            <small>胜率</small>
-            <strong>0%</strong>
-          </div>
+        <div class="brain-stat-card">
+          <small>趋势核心</small>
+          <strong>{{ firstName(tiers.trend_core) }}</strong>
         </div>
       </div>
     </section>
 
-    <section class="summary-card">
-      <div class="section-title">
+    <section class="section-card action-section">
+      <div class="section-head">
+        <span>01</span>
+        <div>
+          <h2>AI今日操作</h2>
+          <p>基于 Market Brain 的统一结论，不做额外策略判断。</p>
+        </div>
+      </div>
+      <div class="action-grid">
+        <div class="action-tile">
+          <small>可以买？</small>
+          <strong :class="canBuy ? 'positive' : 'danger'">{{ canBuy ? 'YES' : 'NO' }}</strong>
+        </div>
+        <div class="action-tile">
+          <small>建议</small>
+          <strong>{{ actionLabel }}</strong>
+        </div>
+        <div class="reason-card">
+          <small>操作理由</small>
+          <p>{{ brain.position?.reason || '暂无数据，请先运行今日策略。' }}</p>
+        </div>
+        <div class="reason-card risk-copy">
+          <small>风险提示</small>
+          <p>{{ riskText }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-head">
+        <span>02</span>
+        <div>
+          <h2>龙头梯队</h2>
+          <p>T1、T2、趋势核心与观察名单统一来自 Market Brain。</p>
+        </div>
+      </div>
+      <div class="tier-grid">
+        <TierCard title="T1 核心龙头" :items="tiers.T1" accent="green" />
+        <TierCard title="T2 补涨龙头" :items="tiers.T2" accent="blue" />
+        <TierCard title="趋势核心" :items="tiers.trend_core" accent="cyan" />
+        <TierCard title="观察名单" :items="brain.decision?.watchlist || []" accent="gray" />
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="section-head">
+        <span>03</span>
+        <div>
+          <h2>市场情绪</h2>
+          <p>情绪分、风险分、建议仓位三块仪表盘。</p>
+        </div>
+      </div>
+      <div class="gauge-grid">
+        <div class="gauge-panel">
+          <h3>情绪分</h3>
+          <div ref="emotionGauge" class="gauge-box"></div>
+        </div>
+        <div class="gauge-panel">
+          <h3>风险分</h3>
+          <div ref="riskGauge" class="gauge-box"></div>
+        </div>
+        <div class="gauge-panel">
+          <h3>建议仓位</h3>
+          <div ref="positionGauge" class="gauge-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card ai-comment">
+      <div class="section-head">
         <span>04</span>
-        <h2>AI总结</h2>
-      </div>
-      <p>系统初始化中</p>
-    </section>
-
-    <section class="mainline-mini-card">
-      <div class="section-title">
-        <span>ML</span>
-        <h2>主线分析</h2>
-      </div>
-      <div class="mainline-mini-grid">
         <div>
-          <small>当前主线</small>
-          <strong>{{ currentMainline }}</strong>
-        </div>
-        <div>
-          <small>明日计划</small>
-          <strong>{{ tomorrowPlan }}</strong>
+          <h2>AI点评</h2>
+          <p>统一市场大脑输出的自然语言摘要。</p>
         </div>
       </div>
-    </section>
-
-    <section class="daily-report-mini-card">
-      <div class="section-title">
-        <span>DR</span>
-        <h2>AI日报摘要</h2>
-      </div>
-      <p>{{ dailyReport.summary || '暂无数据，请先运行今日策略。' }}</p>
-    </section>
-
-    <section class="ai-center-card">
-      <div class="section-title">
-        <span>AI</span>
-        <h2>AI 决策中心</h2>
-      </div>
-      <div class="ai-center-grid">
-        <div class="ai-summary">
-          <small>今日总结</small>
-          <strong>{{ decision.summary || '暂无数据，请先运行今日策略。' }}</strong>
-        </div>
-        <div class="ai-mini">
-          <small>AI建议</small>
-          <strong>{{ decision.emotion || '暂无' }}</strong>
-        </div>
-        <div class="ai-mini">
-          <small>推荐仓位</small>
-          <strong>{{ decision.position || '暂无' }}</strong>
-        </div>
-      </div>
-      <div class="ai-list-grid">
-        <div>
-          <h3>推荐理由</h3>
-          <ul>
-            <li v-for="item in decision.reason || []" :key="item">{{ item }}</li>
-          </ul>
-        </div>
-        <div>
+      <div class="chat-card">
+        <div class="avatar">AI</div>
+        <div class="chat-content">
+          <h3>今日总评</h3>
+          <p>{{ brain.decision?.summary || '暂无数据，请先运行今日策略。' }}</p>
+          <h3>情绪描述</h3>
+          <p>{{ brain.emotion?.description || '暂无数据。' }}</p>
           <h3>风险提示</h3>
           <ul>
-            <li v-for="item in decision.warning || []" :key="item">{{ item }}</li>
+            <li v-for="item in warnings" :key="item">{{ item }}</li>
           </ul>
         </div>
       </div>
     </section>
-
-    <button class="run-button" type="button" @click="runTodayStrategy">
-      运行今日策略
-    </button>
   </main>
 </template>
 
 <script setup>
 import * as echarts from 'echarts'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, defineComponent, h, nextTick, onMounted, ref } from 'vue'
 import { api } from '../services/api'
 
-const dashboard = ref({})
-const decision = ref({})
-const mainline = ref({})
-const dailyReport = ref({})
-const healthGauge = ref(null)
+const brain = ref({})
+const emotionGauge = ref(null)
 const riskGauge = ref(null)
 const positionGauge = ref(null)
-const placeholderTargets = ref([
-  { code: '-', name: '暂无核心标的', role: '等待数据' }
-])
 
-const currentMainline = computed(() => {
-  const first = mainline.value?.mainlines?.[0]
-  return first?.theme || '暂无数据，请先运行今日策略'
+const tiers = computed(() => brain.value.leader?.tier_summary || {})
+const warnings = computed(() => brain.value.risk?.warnings || ['暂无风险提示。'])
+const canBuy = computed(() => !['防守', '观察'].includes(brain.value.decision?.action))
+const actionLabel = computed(() => {
+  const position = positionNumber(brain.value.position?.suggested_position)
+  if (position >= 90) return '满仓'
+  if (position >= 50) return '半仓'
+  if (position > 0) return '轻仓'
+  return brain.value.decision?.action || '观察'
+})
+const riskText = computed(() => warnings.value.join('；'))
+
+const TierCard = defineComponent({
+  props: {
+    title: { type: String, required: true },
+    items: { type: Array, default: () => [] },
+    accent: { type: String, default: 'green' }
+  },
+  setup(props) {
+    return () =>
+      h('article', { class: ['tier-card', `accent-${props.accent}`] }, [
+        h('h3', props.title),
+        props.items?.length
+          ? h(
+              'div',
+              { class: 'stock-stack' },
+              props.items.slice(0, 5).map((item) =>
+                h('div', { class: 'stock-row', key: `${item.code}-${item.name}` }, [
+                  h('div', [h('strong', item.name || '-'), h('small', item.code || '-')]),
+                  h('span', item.score ?? item.master_score ?? '-')
+                ])
+              )
+            )
+          : h('p', { class: 'empty' }, '暂无数据，请先运行今日策略。')
+      ])
+  }
 })
 
-const tomorrowPlan = computed(() => {
-  const plan = mainline.value?.tomorrow_plan
-  if (!plan?.action && !plan?.position) return '暂无数据，请先运行今日策略'
-  return `${plan.action || '观察'} / ${plan.position || '0%'}`
-})
+function firstName(items = []) {
+  return items?.[0]?.name || '暂无'
+}
 
 function numberValue(value) {
-  const parsed = Number(String(value || '0').replace('%', ''))
+  const parsed = Number(String(value ?? '0').replace('%', ''))
   return Number.isFinite(parsed) ? parsed : 0
 }
 
-function positionValue(text) {
-  const match = String(text || '').match(/max_position=([0-9.]+)%/)
-  return match ? numberValue(match[1]) : numberValue(text)
+function positionNumber(value) {
+  return Math.max(0, Math.min(100, numberValue(value)))
 }
 
-function renderGauge(el, value, title, color) {
+function renderGauge(el, value, name, color) {
   if (!el) return
   const chart = echarts.init(el)
   chart.setOption({
@@ -219,358 +212,386 @@ function renderGauge(el, value, title, color) {
         type: 'gauge',
         min: 0,
         max: 100,
-        progress: { show: true, width: 12, itemStyle: { color } },
-        axisLine: { lineStyle: { width: 12, color: [[1, '#15293c']] } },
+        radius: '92%',
+        progress: { show: true, width: 14, itemStyle: { color } },
+        axisLine: { lineStyle: { width: 14, color: [[1, '#13283d']] } },
         axisTick: { show: false },
         splitLine: { show: false },
-        axisLabel: { color: '#8199ad', distance: 16 },
+        axisLabel: { color: '#7f99ad', distance: 18 },
         pointer: { width: 4, itemStyle: { color } },
-        title: { color: '#8199ad', fontSize: 12, offsetCenter: [0, '68%'] },
-        detail: { color: '#f3f8ff', fontSize: 24, formatter: '{value}%', offsetCenter: [0, '38%'] },
-        data: [{ value: Math.max(0, Math.min(100, value)), name: title }]
+        title: { color: '#8aa2b8', fontSize: 13, offsetCenter: [0, '68%'] },
+        detail: { color: '#f3f8ff', fontSize: 30, fontWeight: 800, formatter: '{value}', offsetCenter: [0, '38%'] },
+        data: [{ value: Math.round(Math.max(0, Math.min(100, value))), name }]
       }
     ]
   })
 }
 
-function runTodayStrategy() {
-  window.alert('运行今日策略：当前为前端占位按钮，后续接入本地策略执行 API。')
+function renderAllGauges() {
+  renderGauge(emotionGauge.value, numberValue(brain.value.emotion?.score), 'Emotion', '#35d07f')
+  renderGauge(riskGauge.value, numberValue(brain.value.risk?.risk_level), 'Risk', '#ff5d66')
+  renderGauge(positionGauge.value, positionNumber(brain.value.position?.suggested_position), 'Position', '#00c2ff')
 }
 
 onMounted(async () => {
-  const dashboardRes = await api.dashboard()
-  dashboard.value = dashboardRes.data || {}
-  const decisionRes = await api.decisionCenter()
-  decision.value = decisionRes.data || {}
-  const mainlineRes = await api.mainline()
-  mainline.value = mainlineRes.data || {}
-  const dailyReportRes = await api.dailyAiReport()
-  dailyReport.value = dailyReportRes.data || {}
-  const judgeRes = await api.strategyJudge()
-  const healthScore = numberValue(judgeRes.data?.health_score || judgeRes.data?.health?.strategy_health_score)
-  const res = await api.leaders()
-  placeholderTargets.value = Array.isArray(res.data) && res.data.length
-    ? res.data.slice(0, 3).map((item) => ({
-        code: item.code,
-        name: item.name,
-        role: item.leader_tier || '核心标的'
-      }))
-    : [{ code: '-', name: '暂无数据，请先运行今日策略。', role: '等待数据' }]
+  const response = await api.marketBrain()
+  brain.value = response.data || {}
   await nextTick()
-  renderGauge(healthGauge.value, healthScore, 'health', '#35d07f')
-  renderGauge(riskGauge.value, numberValue(dashboard.value.risk_level), 'risk', '#ff6b6b')
-  renderGauge(positionGauge.value, positionValue(dashboard.value.position_advice), 'position', '#00c2ff')
+  renderAllGauges()
 })
 </script>
 
 <style scoped>
-.command-center {
+.brain-page {
   min-height: calc(100vh - 64px);
   padding: 28px;
   color: #e7eef8;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(0, 194, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 90% 12%, rgba(53, 208, 127, 0.1), transparent 28%);
 }
 
-.page-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+.hero-section,
+.section-card {
+  border: 1px solid rgba(57, 104, 140, 0.46);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(9, 18, 29, 0.96), rgba(4, 13, 24, 0.94));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+}
+
+.hero-section {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) 1.18fr;
+  gap: 24px;
+  margin-bottom: 22px;
+  overflow: hidden;
+  padding: 28px;
+  position: relative;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(0, 194, 255, 0.09), transparent 50%, rgba(53, 208, 127, 0.08));
+  pointer-events: none;
+}
+
+.hero-copy,
+.hero-grid,
+.section-card {
+  position: relative;
 }
 
 .eyebrow {
-  margin: 0 0 6px;
-  color: #7f99ad;
+  color: #00c2ff;
   font-size: 13px;
+  font-weight: 800;
   letter-spacing: 0;
+  margin: 0 0 10px;
+  text-transform: uppercase;
 }
 
 h1,
 h2,
+h3,
 p {
   margin: 0;
 }
 
 h1 {
-  font-size: 32px;
+  color: #f3f8ff;
+  font-size: clamp(38px, 5vw, 72px);
   letter-spacing: 0;
+  line-height: 1;
 }
 
-.status-badge {
-  border: 1px solid #25415b;
-  border-radius: 999px;
-  color: #00c2ff;
-  padding: 8px 14px;
-  background: rgba(0, 194, 255, 0.08);
+.one-line {
+  color: #c7d8e8;
+  font-size: 20px;
+  line-height: 1.7;
+  margin-top: 24px;
+  max-width: 720px;
 }
 
-.decision-card,
-.module-card,
-.summary-card,
-.mainline-mini-card,
-.daily-report-mini-card,
-.ai-center-card,
-.gauge-card {
-  border: 1px solid #183047;
-  border-radius: 8px;
-  background: rgba(9, 18, 29, 0.94);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+.stars {
+  color: #35d07f;
+  font-size: 26px;
+  letter-spacing: 4px;
+  margin-top: 24px;
 }
 
-.decision-card {
-  padding: 22px;
-  margin-bottom: 16px;
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.brain-stat-card,
+.action-tile,
+.reason-card,
+.gauge-panel,
+.tier-card,
+.chat-card {
+  border: 1px solid rgba(34, 68, 96, 0.88);
+  border-radius: 14px;
+  background: rgba(7, 17, 29, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.brain-stat-card {
+  min-height: 116px;
+  padding: 18px;
+}
+
+.brain-stat-card.primary {
+  background: linear-gradient(135deg, rgba(0, 194, 255, 0.22), rgba(53, 208, 127, 0.14));
+}
+
+.brain-stat-card.risk strong {
+  color: #ff7d85;
+}
+
+small {
+  color: #8199ad;
+  display: block;
+  font-size: 13px;
+}
+
+strong {
+  color: #f3f8ff;
+  display: block;
+  font-size: 27px;
+  line-height: 1.18;
+  margin-top: 14px;
+  word-break: break-word;
+}
+
+.brain-stat-card strong {
+  font-size: clamp(24px, 2.4vw, 40px);
+  line-height: 1.15;
+  word-break: keep-all;
+}
+
+.brain-stat-card small {
+  white-space: nowrap;
+}
+
+.section-card {
+  margin-bottom: 22px;
+  padding: 24px;
+}
+
+.section-head {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.section-head > span {
+  background: linear-gradient(135deg, #00c2ff, #35d07f);
+  border-radius: 10px;
+  color: #041019;
+  display: grid;
+  font-weight: 900;
+  height: 42px;
+  place-items: center;
+  width: 42px;
+}
+
+.section-head h2 {
+  color: #f3f8ff;
+  font-size: 24px;
+}
+
+.section-head p {
+  color: #8199ad;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 0.7fr 0.7fr 1.3fr 1.3fr;
+  gap: 14px;
+}
+
+.action-tile,
+.reason-card {
+  padding: 18px;
+}
+
+.action-tile strong {
+  font-size: 36px;
+}
+
+.positive {
+  color: #35d07f;
+}
+
+.danger,
+.risk-copy p {
+  color: #ff7d85;
+}
+
+.reason-card p {
+  color: #d7e7f3;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tier-card {
+  padding: 18px;
+}
+
+.tier-card h3 {
+  color: #f3f8ff;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.accent-green {
+  border-color: rgba(53, 208, 127, 0.48);
+}
+
+.accent-blue {
+  border-color: rgba(0, 194, 255, 0.48);
+}
+
+.accent-cyan {
+  border-color: rgba(95, 220, 255, 0.48);
+}
+
+.stock-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.stock-row {
+  align-items: center;
+  background: #08131f;
+  border: 1px solid #14283b;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+}
+
+.stock-row strong {
+  font-size: 16px;
+  margin: 0;
+}
+
+.stock-row small {
+  display: block;
+  margin-top: 4px;
+}
+
+.stock-row span {
+  color: #35d07f;
+  font-weight: 900;
+}
+
+.empty {
+  background: #08131f;
+  border: 1px solid #14283b;
+  border-radius: 10px;
+  color: #8199ad;
+  padding: 14px;
 }
 
 .gauge-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 14px;
 }
 
-.gauge-card {
+.gauge-panel {
   padding: 18px;
 }
 
+.gauge-panel h3 {
+  color: #d7e7f3;
+  font-size: 18px;
+}
+
 .gauge-box {
-  height: 220px;
+  height: 260px;
 }
 
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.section-title span {
+.chat-card {
   display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  padding: 20px;
+}
+
+.avatar {
+  background: linear-gradient(135deg, #00c2ff, #35d07f);
+  border-radius: 14px;
+  color: #041019;
+  display: grid;
+  font-weight: 900;
+  height: 48px;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  background: #10263a;
-  color: #00c2ff;
-  font-size: 13px;
-  font-weight: 800;
+  width: 48px;
 }
 
-.section-title h2 {
-  font-size: 18px;
-}
-
-.decision-grid,
-.performance-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.metric-box,
-.performance-grid > div {
-  min-height: 104px;
-  border: 1px solid #14283b;
-  border-radius: 8px;
+.chat-content {
   background: #08131f;
-  padding: 16px;
+  border: 1px solid #14283b;
+  border-radius: 14px;
+  padding: 18px;
 }
 
-small {
-  display: block;
-  color: #8199ad;
-  font-size: 13px;
-}
-
-strong {
-  display: block;
-  margin-top: 12px;
-  color: #f3f8ff;
-  font-size: 24px;
-  line-height: 1.2;
-}
-
-.up {
+.chat-content h3 {
   color: #35d07f;
+  font-size: 16px;
+  margin: 0 0 8px;
 }
 
-.risk {
-  color: #ff6b6b;
+.chat-content h3:not(:first-child) {
+  margin-top: 18px;
 }
 
-.flat {
-  color: #8aa2b8;
-}
-
-.panel-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.module-card,
-.summary-card {
-  padding: 20px;
-}
-
-.target-list {
-  display: grid;
-  gap: 10px;
-}
-
-.target-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #14283b;
-  border-radius: 8px;
-  background: #08131f;
-  padding: 14px 16px;
-}
-
-.target-row strong {
-  margin-top: 0;
-  font-size: 18px;
-}
-
-.target-row span {
-  color: #8aa2b8;
-  font-size: 13px;
-}
-
-.performance-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.summary-card {
-  margin-bottom: 18px;
-}
-
-.mainline-mini-card {
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-.mainline-mini-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.mainline-mini-grid > div {
-  border: 1px solid #14283b;
-  border-radius: 8px;
-  background: #08131f;
-  padding: 16px;
-}
-
-.mainline-mini-grid strong {
-  font-size: 22px;
-  color: #35d07f;
-}
-
-.daily-report-mini-card {
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-.daily-report-mini-card p {
-  border-left: 3px solid #35d07f;
-  background: #08131f;
-  border-radius: 6px;
+.chat-content p,
+.chat-content li {
   color: #d7e7f3;
   line-height: 1.8;
-  padding: 16px;
 }
 
-.summary-card p {
-  border-left: 3px solid #00c2ff;
-  background: #08131f;
-  border-radius: 6px;
-  color: #d7e7f3;
-  padding: 16px;
-}
-
-.ai-center-card {
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-.ai-center-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 0.8fr 0.8fr;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.ai-summary,
-.ai-mini {
-  border: 1px solid #14283b;
-  border-radius: 8px;
-  background: #08131f;
-  padding: 16px;
-}
-
-.ai-summary strong {
-  font-size: 22px;
-}
-
-.ai-mini strong {
-  color: #35d07f;
-}
-
-.ai-list-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.ai-list-grid > div {
-  border: 1px solid #14283b;
-  border-radius: 8px;
-  background: #08131f;
-  padding: 16px;
-}
-
-.ai-list-grid h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
-}
-
-.ai-list-grid ul {
+.chat-content ul {
   margin: 0;
   padding-left: 18px;
-  color: #d7e7f3;
-  line-height: 1.8;
 }
 
-.run-button {
-  width: 100%;
-  border: 0;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #00c2ff, #35d07f);
-  color: #041019;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 800;
-  padding: 16px 20px;
+@media (max-width: 1180px) {
+  .hero-section,
+  .action-grid,
+  .tier-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-@media (max-width: 980px) {
-  .decision-grid,
-  .panel-grid,
-  .gauge-grid,
-  .performance-grid,
-  .mainline-mini-grid,
-  .ai-center-grid,
-  .ai-list-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 820px) {
+  .brain-page {
+    padding: 18px;
   }
 
-  .page-head {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+  .hero-section,
+  .hero-grid,
+  .action-grid,
+  .tier-grid,
+  .gauge-grid,
+  .chat-card {
+    grid-template-columns: 1fr;
   }
 }
 </style>
