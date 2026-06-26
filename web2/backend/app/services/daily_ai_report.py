@@ -3,13 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 
 from app.core.config import settings
-from app.services.decision_center import build_decision_center
-from app.services.mainline_engine import build_mainline_analysis
-from app.services.report_service import (
-    build_dashboard,
-    read_frozen_orders,
-    read_strategy_judge,
-)
+from app.services.market_brain import build_market_brain
+from app.services.report_service import read_frozen_orders, read_strategy_judge
 
 
 def _today_text() -> str:
@@ -46,50 +41,46 @@ def _order_summary(payload: dict) -> str:
 
 
 def build_daily_ai_report(user: dict) -> dict:
-    dashboard = build_dashboard(user).model_dump()
-    decision = build_decision_center(user)
-    mainline = build_mainline_analysis(user)
+    brain = build_market_brain(user)
     judge = read_strategy_judge(user)
     frozen = read_frozen_orders(user)
 
     date_text = _today_text()
     title = f"AI复盘日报 {date_text}"
-    market_status = _value(dashboard.get("market_status"))
-    allow_trade = _value(dashboard.get("allow_trade"))
-    risk_level = _value(dashboard.get("risk_level"))
-    position = _value(decision.get("position") or dashboard.get("position_advice"))
+    emotion = brain.get("emotion", {})
+    theme = brain.get("theme", {})
+    leader = brain.get("leader", {})
+    risk = brain.get("risk", {})
+    position = brain.get("position", {})
+    decision = brain.get("decision", {})
+
     summary = _value(decision.get("summary"), "系统暂无明确结论，请先运行今日策略。")
-
     market_view = (
-        f"当前市场状态为 {market_status}，系统交易许可为 {allow_trade}，"
-        f"风险等级为 {risk_level}，建议仓位为 {position}。"
+        f"当前市场情绪为 {emotion.get('stage', '暂无数据')}，"
+        f"情绪强度 {emotion.get('score', 0)}。{emotion.get('description', '')}"
     )
 
-    mainlines = mainline.get("mainlines", [])
-    top_mainline = mainlines[0] if mainlines else {}
+    rank = theme.get("theme_rank", [])
+    first_theme = rank[0] if rank else {}
     mainline_view = (
-        f"当前主线优先观察：{_value(top_mainline.get('theme'))}。"
-        f"热度分为 {_value(top_mainline.get('heat_score'))}，"
-        f"主线龙头为 {_value(top_mainline.get('leader'))}，"
-        f"趋势核心为 {_value(top_mainline.get('core_trend'))}。"
+        f"当前主线优先观察：{theme.get('main_theme', '暂无主线')}。"
+        f"热度分为 {_value(first_theme.get('score'))}，"
+        f"依据：{_value(first_theme.get('reason'))}。"
     )
 
-    tiers = mainline.get("leader_tiers", {})
+    tiers = leader.get("tier_summary", {})
     leader_view = (
         f"T1核心龙头：{_top_names(tiers.get('T1', []))}。\n"
         f"T2补涨龙头：{_top_names(tiers.get('T2', []))}。\n"
         f"趋势核心：{_top_names(tiers.get('trend_core', []))}。"
     )
 
-    warnings = decision.get("warning", [])
-    risk_view = "；".join(warnings) if warnings else "暂无额外风险提示。"
-
-    plan = mainline.get("tomorrow_plan", {})
+    risk_view = "；".join(risk.get("warnings", [])) if risk.get("warnings") else "暂无额外风险提示。"
     tomorrow_plan = (
-        f"明日动作：{_value(plan.get('action'))}；"
-        f"建议仓位：{_value(plan.get('position'))}；"
-        f"买入条件：{_value(plan.get('buy_condition'))}；"
-        f"风险条件：{_value(plan.get('risk_condition'))}。"
+        f"明日动作：{decision.get('action', '观察')}；"
+        f"建议仓位：{position.get('suggested_position', '0%')}；"
+        f"仓位原因：{position.get('reason', '暂无数据')}；"
+        f"观察名单：{_top_names(decision.get('watchlist', []), 8)}。"
     )
 
     health = judge.get("health", {}) if judge.get("allowed", True) else {}

@@ -7,6 +7,7 @@ from app.services.auth_service import authenticate_user, get_user_by_username
 from app.services.decision_center import build_decision_center
 from app.services.daily_ai_report import build_daily_ai_report
 from app.services.mainline_engine import build_mainline_analysis
+from app.services.market_brain import build_market_brain
 from app.services.report_service import (
     build_dashboard,
     read_disclaimer,
@@ -184,3 +185,8 @@ def mainline(current_user: dict = Depends(get_optional_user)) -> dict:
 @router.get("/daily-ai-report")
 def daily_ai_report(current_user: dict = Depends(get_optional_user)) -> dict:
     return _envelope(current_user, True, build_daily_ai_report(current_user))
+
+
+@router.get("/market-brain")
+def market_brain(current_user: dict = Depends(get_optional_user)) -> dict:
+    return _envelope(current_user, True, build_market_brain(current_user))
