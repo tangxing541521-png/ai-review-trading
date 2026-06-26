@@ -7,6 +7,7 @@ import Reports from '../views/Reports.vue'
 import Disclaimer from '../views/Disclaimer.vue'
 import FrozenOrders from '../views/FrozenOrders.vue'
 import Leaders from '../views/Leaders.vue'
+import Mainline from '../views/Mainline.vue'
 import Membership from '../views/Membership.vue'
 import StrategyJudge from '../views/StrategyJudge.vue'
 import Validation from '../views/Validation.vue'
@@ -16,6 +17,7 @@ const routes = [
   { path: '/', name: 'dashboard', component: Dashboard },
   { path: '/market', name: 'market', component: Market },
   { path: '/leaders', name: 'leaders', component: Leaders },
+  { path: '/mainline', name: 'mainline', component: Mainline },
   { path: '/frozen-orders', name: 'frozenOrders', component: FrozenOrders },
   { path: '/paper', name: 'paper', component: PaperTrading },
   { path: '/strategy-judge', name: 'strategyJudge', component: StrategyJudge },

@@ -106,6 +106,23 @@
       <p>系统初始化中</p>
     </section>
 
+    <section class="mainline-mini-card">
+      <div class="section-title">
+        <span>ML</span>
+        <h2>主线分析</h2>
+      </div>
+      <div class="mainline-mini-grid">
+        <div>
+          <small>当前主线</small>
+          <strong>{{ currentMainline }}</strong>
+        </div>
+        <div>
+          <small>明日计划</small>
+          <strong>{{ tomorrowPlan }}</strong>
+        </div>
+      </div>
+    </section>
+
     <section class="ai-center-card">
       <div class="section-title">
         <span>AI</span>
@@ -149,17 +166,29 @@
 
 <script setup>
 import * as echarts from 'echarts'
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { api } from '../services/api'
 
 const dashboard = ref({})
 const decision = ref({})
+const mainline = ref({})
 const healthGauge = ref(null)
 const riskGauge = ref(null)
 const positionGauge = ref(null)
 const placeholderTargets = ref([
   { code: '-', name: '暂无核心标的', role: '等待数据' }
 ])
+
+const currentMainline = computed(() => {
+  const first = mainline.value?.mainlines?.[0]
+  return first?.theme || '暂无数据，请先运行今日策略'
+})
+
+const tomorrowPlan = computed(() => {
+  const plan = mainline.value?.tomorrow_plan
+  if (!plan?.action && !plan?.position) return '暂无数据，请先运行今日策略'
+  return `${plan.action || '观察'} / ${plan.position || '0%'}`
+})
 
 function numberValue(value) {
   const parsed = Number(String(value || '0').replace('%', ''))
@@ -204,6 +233,8 @@ onMounted(async () => {
   dashboard.value = dashboardRes.data || {}
   const decisionRes = await api.decisionCenter()
   decision.value = decisionRes.data || {}
+  const mainlineRes = await api.mainline()
+  mainline.value = mainlineRes.data || {}
   const judgeRes = await api.strategyJudge()
   const healthScore = numberValue(judgeRes.data?.health_score || judgeRes.data?.health?.strategy_health_score)
   const res = await api.leaders()
@@ -264,6 +295,7 @@ h1 {
 .decision-card,
 .module-card,
 .summary-card,
+.mainline-mini-card,
 .ai-center-card,
 .gauge-card {
   border: 1px solid #183047;
@@ -402,6 +434,29 @@ strong {
   margin-bottom: 18px;
 }
 
+.mainline-mini-card {
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.mainline-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mainline-mini-grid > div {
+  border: 1px solid #14283b;
+  border-radius: 8px;
+  background: #08131f;
+  padding: 16px;
+}
+
+.mainline-mini-grid strong {
+  font-size: 22px;
+  color: #35d07f;
+}
+
 .summary-card p {
   border-left: 3px solid #00c2ff;
   background: #08131f;
@@ -480,6 +535,7 @@ strong {
   .panel-grid,
   .gauge-grid,
   .performance-grid,
+  .mainline-mini-grid,
   .ai-center-grid,
   .ai-list-grid {
     grid-template-columns: 1fr;

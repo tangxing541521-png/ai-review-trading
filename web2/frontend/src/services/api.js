@@ -51,6 +51,7 @@ export const api = {
   frozenOrders: () => request('/frozen-orders'),
   strategyJudge: () => request('/strategy-judge'),
   decisionCenter: () => request('/decision-center'),
+  mainline: () => request('/mainline'),
   membership: () => request('/membership'),
   disclaimer: () => request('/disclaimer')
 }
