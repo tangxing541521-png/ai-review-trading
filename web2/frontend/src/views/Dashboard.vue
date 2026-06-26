@@ -82,6 +82,41 @@
       <p>系统初始化中</p>
     </section>
 
+    <section class="ai-center-card">
+      <div class="section-title">
+        <span>AI</span>
+        <h2>AI 决策中心</h2>
+      </div>
+      <div class="ai-center-grid">
+        <div class="ai-summary">
+          <small>今日总结</small>
+          <strong>{{ decision.summary || '暂无数据，请先运行今日策略。' }}</strong>
+        </div>
+        <div class="ai-mini">
+          <small>AI建议</small>
+          <strong>{{ decision.emotion || '暂无' }}</strong>
+        </div>
+        <div class="ai-mini">
+          <small>推荐仓位</small>
+          <strong>{{ decision.position || '暂无' }}</strong>
+        </div>
+      </div>
+      <div class="ai-list-grid">
+        <div>
+          <h3>推荐理由</h3>
+          <ul>
+            <li v-for="item in decision.reason || []" :key="item">{{ item }}</li>
+          </ul>
+        </div>
+        <div>
+          <h3>风险提示</h3>
+          <ul>
+            <li v-for="item in decision.warning || []" :key="item">{{ item }}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <button class="run-button" type="button" @click="runTodayStrategy">
       运行今日策略
     </button>
@@ -93,6 +128,7 @@ import { onMounted, ref } from 'vue'
 import { api } from '../services/api'
 
 const dashboard = ref({})
+const decision = ref({})
 const placeholderTargets = ref([
   { code: '-', name: '暂无核心标的', role: '等待数据' }
 ])
@@ -104,6 +140,8 @@ function runTodayStrategy() {
 onMounted(async () => {
   const dashboardRes = await api.dashboard()
   dashboard.value = dashboardRes.data || {}
+  const decisionRes = await api.decisionCenter()
+  decision.value = decisionRes.data || {}
   const res = await api.leaders()
   placeholderTargets.value = Array.isArray(res.data) && res.data.length
     ? res.data.slice(0, 3).map((item) => ({
@@ -157,7 +195,8 @@ h1 {
 
 .decision-card,
 .module-card,
-.summary-card {
+.summary-card,
+.ai-center-card {
   border: 1px solid #183047;
   border-radius: 8px;
   background: rgba(9, 18, 29, 0.94);
@@ -287,6 +326,59 @@ strong {
   padding: 16px;
 }
 
+.ai-center-card {
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.ai-center-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 0.8fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ai-summary,
+.ai-mini {
+  border: 1px solid #14283b;
+  border-radius: 8px;
+  background: #08131f;
+  padding: 16px;
+}
+
+.ai-summary strong {
+  font-size: 22px;
+}
+
+.ai-mini strong {
+  color: #35d07f;
+}
+
+.ai-list-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.ai-list-grid > div {
+  border: 1px solid #14283b;
+  border-radius: 8px;
+  background: #08131f;
+  padding: 16px;
+}
+
+.ai-list-grid h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.ai-list-grid ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #d7e7f3;
+  line-height: 1.8;
+}
+
 .run-button {
   width: 100%;
   border: 0;
@@ -302,7 +394,9 @@ strong {
 @media (max-width: 980px) {
   .decision-grid,
   .panel-grid,
-  .performance-grid {
+  .performance-grid,
+  .ai-center-grid,
+  .ai-list-grid {
     grid-template-columns: 1fr;
   }
 

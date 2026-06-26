@@ -1,8 +1,31 @@
-__pycache__/ 
-*.pyc 
-.venv/ 
-.env 
-data/raw/ 
-data/cache/ 
-market_histories_*.csv 
-daily_quotes_*.csv 
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# 每日行情缓存
+data/raw/
+data/cache/
+daily_quotes_*.csv
+market_histories_*.csv
+
+# 每日运行结果
+reports/
+portfolio/
+frozen_decisions/
+*.log
+
+# 交易过程数据
+orders_*.csv
+orders_*.json
+paper_account.csv
+paper_positions.csv
+paper_trades.csv
+paper_equity_curve.csv
+trade_log.csv
+strategy_metrics.csv
+strategy_health_score.csv
+
+# 前端依赖
+web2/frontend/node_modules/
+web2/frontend/dist/

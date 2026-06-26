@@ -50,6 +50,7 @@ export const api = {
   leaders: () => request('/leaders'),
   frozenOrders: () => request('/frozen-orders'),
   strategyJudge: () => request('/strategy-judge'),
+  decisionCenter: () => request('/decision-center'),
   membership: () => request('/membership'),
   disclaimer: () => request('/disclaimer')
 }

@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.core.security import create_access_token
 from app.schemas.auth import LoginRequest, LoginResponse
 from app.services.auth_service import authenticate_user, get_user_by_username
+from app.services.decision_center import build_decision_center
 from app.services.report_service import (
     build_dashboard,
     read_disclaimer,
@@ -166,3 +167,8 @@ def disclaimer() -> dict:
         "membership_level": "anonymous",
         "data": read_disclaimer(),
     }
+
+
+@router.get("/decision-center")
+def decision_center(current_user: dict = Depends(get_optional_user)) -> dict:
+    return _envelope(current_user, True, build_decision_center(current_user))
