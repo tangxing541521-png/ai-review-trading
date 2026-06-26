@@ -6,6 +6,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from app.core.config import settings
+from app.services.emotion_cycle_engine import build_emotion_cycle
 
 
 def _read_csv_rows(path: Path) -> list[dict]:
@@ -35,7 +36,7 @@ def _latest_json(pattern: str) -> dict:
 
 def _to_float(value, default: float = 0.0) -> float:
     try:
-        if value is None or value == "":
+        if value in (None, ""):
             return default
         return float(value)
     except Exception:
@@ -53,14 +54,6 @@ def _score(row: dict) -> float:
         if value >= 0:
             return value
     return 0.0
-
-
-def _risk_label(value: float) -> str:
-    if value >= 70:
-        return "高"
-    if value >= 30:
-        return "中"
-    return "低"
 
 
 def _compact_stock(row: dict) -> dict:
@@ -117,58 +110,17 @@ def _build_theme_rank(rows: list[dict]) -> list[dict]:
     return sorted(result, key=lambda item: item["score"], reverse=True)[:8]
 
 
-def _emotion_stage(cycle_row: dict, rows: list[dict]) -> tuple[str, float, str]:
-    cycle = str(cycle_row.get("market_cycle", ""))
-    strength = _to_float(cycle_row.get("cycle_strength"))
-    top_scores = [_score(row) for row in rows[:5]]
-    avg_top = sum(top_scores) / len(top_scores) if top_scores else 0.0
-    raw_score = max(strength, avg_top)
-
-    if "退潮" in cycle:
-        return "退潮", round(raw_score or 20, 2), "市场周期处于退潮，交易权限应以防守为主。"
-    if "冰点" in cycle:
-        return "冰点", round(raw_score or 15, 2), "市场情绪处于冰点，优先观察修复信号。"
-    if raw_score >= 90:
-        return "高潮", round(raw_score, 2), "高分股票集中，情绪接近高潮，需防止一致后的分歧。"
-    if raw_score >= 78:
-        return "一致", round(raw_score, 2), "核心标的强度较高，市场一致性较强。"
-    if raw_score >= 55:
-        return "修复", round(raw_score, 2), "市场出现修复迹象，但仍需等待主线确认。"
-    return "分歧", round(raw_score, 2), "强弱分化明显，暂不适合扩大交易。"
-
-
-def _position(stage: str, risk_level: float) -> tuple[str, str, str]:
-    if stage in {"退潮", "冰点"} or risk_level >= 70:
-        return "0%", "防守", "市场风险或周期状态不支持开仓。"
-    if stage == "分歧":
-        return "20%", "观察", "市场分歧较大，仅保留观察权限。"
-    if stage == "修复":
-        return "30%", "轻仓", "市场修复中，只允许小仓位跟踪核心。"
-    if stage == "一致":
-        return "60%", "进攻", "市场一致性提升，可围绕主线核心进攻。"
-    return "60%", "进攻", "情绪高位时只关注核心，不追弱分支。"
-
-
 def build_market_brain(user: dict | None = None) -> dict:
     leader_rows = _read_csv_rows(settings.project_root / "leader_tier.csv")
     detection_rows = _read_csv_rows(settings.project_root / "leader_detection.csv")
     trend_rows = _latest_csv_rows("data/processed/trend_core_pool_*.csv")
-    cycle_rows = _read_csv_rows(settings.project_root / "cycle_strength_report.csv")
-    health_rows = _read_csv_rows(settings.project_root / "strategy_health_score.csv")
     frozen = _latest_json("frozen_decisions/orders_*.json")
 
     rows = leader_rows or detection_rows or trend_rows
     sorted_rows = sorted(rows, key=_score, reverse=True)
-    cycle_row = cycle_rows[-1] if cycle_rows else {}
-    health_row = health_rows[-1] if health_rows else {}
+    emotion_cycle = build_emotion_cycle(user)
+    risk_score = _to_float(emotion_cycle.get("risk_score"))
 
-    stage, emotion_score, description = _emotion_stage(cycle_row, sorted_rows)
-    risk_level = _to_float(cycle_row.get("risk_level"))
-    health_score = _to_float(health_row.get("strategy_health_score"))
-    if health_score and health_score < 40:
-        risk_level = max(risk_level, 60)
-
-    suggested_position, action, position_reason = _position(stage, risk_level)
     theme_rank = _build_theme_rank(rows or trend_rows)
     main_theme = theme_rank[0]["name"] if theme_rank else "暂无主线"
 
@@ -177,25 +129,26 @@ def build_market_brain(user: dict | None = None) -> dict:
     if not t2:
         t2 = [row for row in leader_rows if row not in t1][:10]
     trend_core = sorted(trend_rows, key=lambda row: _to_float(row.get("trend_score"), _score(row)), reverse=True)[:10]
-
-    warnings = []
-    if stage in {"退潮", "冰点"}:
-        warnings.append("周期偏弱，禁止把观察信号当成交易信号。")
-    if risk_level >= 70:
-        warnings.append("风险等级高，应保持防守。")
-    if health_score and health_score < 60:
-        warnings.append("策略健康分不足，继续以前向验证为主。")
-    if not warnings:
-        warnings.append("所有信号仅用于学习研究和模拟验证，不构成投资建议。")
-
     watchlist_source = t1 or trend_core or sorted_rows
+
+    stage = emotion_cycle.get("stage", "分歧")
+    action = _action_from_trade_mode(emotion_cycle.get("trade_mode", "观察"))
+    suggested_position = emotion_cycle.get("position_suggestion", "0%")
     summary = f"{stage}阶段，主线为{main_theme}，建议{action}，仓位{suggested_position}。"
+    description = "；".join(emotion_cycle.get("stage_reason", [])) or "暂无情绪周期说明。"
 
     return {
         "emotion": {
             "stage": stage,
-            "score": emotion_score,
+            "score": emotion_cycle.get("score", 0),
             "description": description,
+            "stage_reason": emotion_cycle.get("stage_reason", []),
+            "risk_level": emotion_cycle.get("risk_level", "中"),
+            "trade_mode": emotion_cycle.get("trade_mode", "观察"),
+            "position_suggestion": suggested_position,
+            "next_stage_guess": emotion_cycle.get("next_stage_guess", "可能修复"),
+            "warning": emotion_cycle.get("warning", []),
+            "raw": emotion_cycle.get("raw", {}),
         },
         "theme": {
             "main_theme": main_theme,
@@ -210,13 +163,13 @@ def build_market_brain(user: dict | None = None) -> dict:
             },
         },
         "risk": {
-            "risk_level": round(risk_level, 2),
-            "risk_label": _risk_label(risk_level),
-            "warnings": warnings,
+            "risk_level": risk_score,
+            "risk_label": emotion_cycle.get("risk_level", "中"),
+            "warnings": emotion_cycle.get("warning", []),
         },
         "position": {
             "suggested_position": suggested_position,
-            "reason": position_reason,
+            "reason": _position_reason(emotion_cycle),
         },
         "decision": {
             "action": action,
@@ -227,7 +180,30 @@ def build_market_brain(user: dict | None = None) -> dict:
             "leader_rows": len(leader_rows),
             "trend_rows": len(trend_rows),
             "frozen_order_count": len(frozen.get("orders", [])) if isinstance(frozen, dict) else 0,
-            "strategy_health_score": health_score,
+            "strategy_health_score": emotion_cycle.get("raw", {}).get("strategy_health_score", 0),
         },
         "disclaimer": settings.disclaimer,
     }
+
+
+def _action_from_trade_mode(trade_mode: str) -> str:
+    if trade_mode == "空仓":
+        return "防守"
+    if trade_mode == "轻仓":
+        return "轻仓"
+    if trade_mode == "进攻":
+        return "进攻"
+    return "观察"
+
+
+def _position_reason(emotion_cycle: dict) -> str:
+    mode = emotion_cycle.get("trade_mode", "观察")
+    stage = emotion_cycle.get("stage", "分歧")
+    next_stage = emotion_cycle.get("next_stage_guess", "")
+    if mode == "空仓":
+        return f"情绪周期为{stage}，下阶段推演为{next_stage}，当前不支持开仓。"
+    if mode == "轻仓":
+        return f"情绪周期为{stage}，只允许轻仓跟踪核心方向。"
+    if mode == "进攻":
+        return f"情绪周期为{stage}，主线确认度较高，可围绕核心主线进攻。"
+    return f"情绪周期为{stage}，等待更明确的主线和风险确认。"

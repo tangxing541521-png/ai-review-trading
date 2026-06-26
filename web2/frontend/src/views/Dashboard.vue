@@ -97,7 +97,25 @@
         <span>03</span>
         <div>
           <h2>市场情绪</h2>
-          <p>情绪分、风险分、建议仓位三块仪表盘。</p>
+          <p>当前阶段、情绪分、下阶段推演和风险提示。</p>
+        </div>
+      </div>
+      <div class="cycle-strip">
+        <div>
+          <small>当前阶段</small>
+          <strong>{{ brain.emotion?.stage || '暂无' }}</strong>
+        </div>
+        <div>
+          <small>情绪分</small>
+          <strong>{{ brain.emotion?.score ?? 0 }}</strong>
+        </div>
+        <div>
+          <small>下阶段推演</small>
+          <strong>{{ brain.emotion?.next_stage_guess || '暂无数据' }}</strong>
+        </div>
+        <div>
+          <small>风险提示</small>
+          <p>{{ riskText }}</p>
         </div>
       </div>
       <div class="gauge-grid">
@@ -513,6 +531,31 @@ strong {
   gap: 14px;
 }
 
+.cycle-strip {
+  display: grid;
+  grid-template-columns: 0.8fr 0.7fr 1fr 1.5fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.cycle-strip > div {
+  background: #08131f;
+  border: 1px solid #14283b;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.cycle-strip strong {
+  color: #35d07f;
+  font-size: 24px;
+}
+
+.cycle-strip p {
+  color: #ffb4b4;
+  line-height: 1.8;
+  margin-top: 10px;
+}
+
 .gauge-panel {
   padding: 18px;
 }
@@ -589,6 +632,7 @@ strong {
   .hero-grid,
   .action-grid,
   .tier-grid,
+  .cycle-strip,
   .gauge-grid,
   .chat-card {
     grid-template-columns: 1fr;

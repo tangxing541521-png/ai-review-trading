@@ -55,10 +55,14 @@ def build_daily_ai_report(user: dict) -> dict:
     decision = brain.get("decision", {})
 
     summary = _value(decision.get("summary"), "系统暂无明确结论，请先运行今日策略。")
-    market_view = (
-        f"当前市场情绪为 {emotion.get('stage', '暂无数据')}，"
-        f"情绪强度 {emotion.get('score', 0)}。{emotion.get('description', '')}"
+    cycle_view = (
+        f"当前情绪周期：{emotion.get('stage', '暂无数据')}；"
+        f"情绪分：{emotion.get('score', 0)}；"
+        f"交易模式：{emotion.get('trade_mode', '观察')}；"
+        f"下阶段推演：{emotion.get('next_stage_guess', '暂无数据')}。"
     )
+    cycle_reason = "；".join(emotion.get("stage_reason", [])) or "暂无情绪周期理由。"
+    market_view = cycle_view + "\n" + cycle_reason
 
     rank = theme.get("theme_rank", [])
     first_theme = rank[0] if rank else {}
@@ -91,6 +95,7 @@ def build_daily_ai_report(user: dict) -> dict:
         [
             f"# {title}",
             "## 今日总结\n" + summary,
+            "## 情绪周期\n" + cycle_view + "\n\n" + cycle_reason,
             "## 市场判断\n" + market_view,
             "## 主线判断\n" + mainline_view,
             "## 龙头梯队\n" + leader_view,
@@ -111,5 +116,7 @@ def build_daily_ai_report(user: dict) -> dict:
         "risk_view": risk_view,
         "tomorrow_plan": tomorrow_plan,
         "full_report": full_report,
+        "emotion_cycle_view": cycle_view,
+        "emotion_cycle_reason": cycle_reason,
         "disclaimer": settings.disclaimer,
     }
