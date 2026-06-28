@@ -11,8 +11,16 @@
       <nav>
         <RouterLink to="/">Dashboard</RouterLink>
         <RouterLink to="/market">今日市场</RouterLink>
+        <RouterLink to="/market-hub">Market Data Hub</RouterLink>
         <RouterLink to="/leaders">龙头排行榜</RouterLink>
         <RouterLink to="/mainline">主线分析</RouterLink>
+        <RouterLink to="/trading-plan">交易计划</RouterLink>
+        <RouterLink to="/trade-script">明日剧本</RouterLink>
+        <RouterLink to="/pre-market">盘前AI</RouterLink>
+        <RouterLink to="/auction-ai">集合竞价AI</RouterLink>
+        <RouterLink to="/realtime-ai">实时AI</RouterLink>
+        <RouterLink to="/ai-decision">AI决策</RouterLink>
+        <RouterLink to="/trader-agent">AI Trader</RouterLink>
         <RouterLink to="/daily-ai-report">AI日报</RouterLink>
         <RouterLink to="/frozen-orders">冻结订单</RouterLink>
         <RouterLink to="/paper">Paper Trading</RouterLink>
